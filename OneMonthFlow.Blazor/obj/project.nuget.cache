@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "h6qGZbPL/a4=",
+  "dgSpecHash": "lROJLgBP7aU=",
   "success": true,
-  "projectFilePath": "C:\\FILES\\pj\\OneMonthFlow-Blazor\\OneMonthFlow.Blazor\\OneMonthFlow.Blazor.csproj",
+  "projectFilePath": "C:\\FILES\\pj\\OneMonthFlow-Blazor\\OneMonthFlow.Blazor\\OneMonthFlow.Blazor\\OneMonthFlow.Blazor.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\littl\\.nuget\\packages\\microsoft.aspnetcore.authorization\\8.0.12\\microsoft.aspnetcore.authorization.8.0.12.nupkg.sha512",
     "C:\\Users\\littl\\.nuget\\packages\\microsoft.aspnetcore.components\\8.0.12\\microsoft.aspnetcore.components.8.0.12.nupkg.sha512",

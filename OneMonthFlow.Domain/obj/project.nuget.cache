@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zo5zelP4LOg=",
+  "dgSpecHash": "7m/3eM/dpxM=",
   "success": true,
-  "projectFilePath": "C:\\FILES\\pj\\OneMonthFlow-Blazor\\OneMonthFlow.Domain\\OneMonthFlow.Domain.csproj",
+  "projectFilePath": "C:\\FILES\\pj\\OneMonthFlow-Blazor\\OneMonthFlow.Blazor\\OneMonthFlow.Domain\\OneMonthFlow.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
