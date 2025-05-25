@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OneMonthFlow.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a8d807cb0904b1eca1f0872af898d14b8566671e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+249e53c4e9cf27240c60a48587e26abd311f705c")]
 [assembly: System.Reflection.AssemblyProductAttribute("OneMonthFlow.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OneMonthFlow.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
