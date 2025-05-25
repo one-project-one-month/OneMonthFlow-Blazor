@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "yp8e05yBrzE=",
+  "success": true,
+  "projectFilePath": "C:\\FILES\\pj\\OneMonthFlow-Blazor\\OneMonthFlow.Shared\\OneMonthFlow.Shared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\littl\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

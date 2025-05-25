@@ -1,0 +1,190 @@
+﻿@page "/users"
+@inject IDialogService DialogService
+
+<MudButton Variant="Variant.Filled" OnClick="Create" Color="Color.Primary">Add New User</MudButton>
+
+<MudDataGrid @ref="_dataGrid"
+             Items="@Users"
+             ReadOnly="true"
+             EditMode="@DataGridEditMode.Cell"
+             Class="mt-4">
+    <Columns>
+        <HierarchyColumn T="UserModel" EnableHeaderToggle="true" />
+        <PropertyColumn Property="x => x.UserName" Title="User Name" />
+        <PropertyColumn Property="x => x.GitHubAccountName" Title="GitHub Account" />
+        <PropertyColumn Property="x => x" Title="Actions">
+            <CellTemplate>
+                <MudButtonGroup>
+                    <MudButton OnClick="() => Edit(context.Item)" Color="Color.Info" Size="Size.Small">Edit</MudButton>
+                </MudButtonGroup>
+            </CellTemplate>
+        </PropertyColumn>
+    </Columns>
+    <ChildRowContent>
+        <MudGrid>
+            <MudItem xs="12" sm="6" md="4">
+                <MudText Typo="Typo.body1"><strong>User Code:</strong> @context.Item.UserCode</MudText>
+                <MudText><strong>NRC:</strong> @context.Item.Nrc</MudText>
+                <MudText><strong>Mobile No:</strong> @context.Item.MobileNo</MudText>
+            </MudItem>
+        </MudGrid>
+    </ChildRowContent>
+</MudDataGrid>
+
+<MudPagination Class="mt-4" Count="@(TotalCount / PageSize + (TotalCount % PageSize > 0 ? 1 : 0))"
+               Elevation="0"
+               BoundaryCount="2"
+               SelectedChanged="@PageChanged" />
+
+@code {
+    private List<UserModel> Users = new();
+    private int TotalCount = 0;
+    private int Page = 1;
+    private int PageSize = 5;
+
+    private MudDataGrid<UserModel>? _dataGrid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await List();
+    }
+
+    private async Task List()
+    {
+        var result = await _httpClientService.ExecuteAsync<Result<string>>(ApiEndpoints.CreateMemberTechStack, EnumHttpMethod.Post, Users);
+    }
+
+    private async Task PageChanged(int pageNo)
+    {
+        Page = pageNo;
+        await List();
+        StateHasChanged();
+    }
+
+    private async Task Create()
+    {
+        var dialog = await DialogService.ShowAsync<AddUserDialog>("Add New User");
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await List();
+        }
+    }
+
+    private async Task Edit(UserModel user)
+    {
+        var parameters = new DialogParameters<EditUserDialog>
+        {
+            { x => x.UserId, user.UserId },
+            { x => x.Request, new UserRequestModel
+                {
+                    UserCode = user.UserCode,
+                    UserName = user.UserName,
+                    GitHubAccountName = user.GitHubAccountName,
+                    Nrc = user.Nrc,
+                    MobileNo = user.MobileNo
+                }
+            }
+        };
+
+        var dialog = await DialogService.ShowAsync<EditUserDialog>("Edit User", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await List();
+        }
+    }
+
+    public class UserModel
+    {
+        public string UserId { get; set; } = string.Empty;
+        public string UserCode { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
+        public string? GitHubAccountName { get; set; }
+        public string? Nrc { get; set; }
+        public string? MobileNo { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
+    }
+
+    public class UserRequestModel
+    {
+        public string UserCode { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
+        public string? GitHubAccountName { get; set; }
+        public string? Nrc { get; set; }
+        public string? MobileNo { get; set; }
+    }
+
+    public enum EnumResultType
+    {
+        None,
+        Success,
+        Failure,
+        ValidationError,
+        NotFoundError
+    }
+
+    public class Result<T>
+    {
+        public bool IsSuccess { get; private set; }
+
+        public bool IsError
+        {
+            get { return !IsSuccess; }
+        }
+
+        public bool IsValidationError
+        {
+            get { return ResultType == EnumResultType.ValidationError; }
+        }
+
+        public bool IsNotFoundError
+        {
+            get { return ResultType == EnumResultType.NotFoundError; }
+        }
+
+        private EnumResultType ResultType { get; set; }
+        public T? Data { get; private set; }
+        public string? Message { get; private set; }
+
+        public EnumResultType GetResultType() => ResultType;
+
+        private Result(bool isSuccess, T? data, string? message)
+        {
+            IsSuccess = isSuccess;
+            Data = data;
+            Message = message;
+        }
+
+        public static Result<T> Success(T data, string? message = "Operation Successful.")
+        {
+            var item = new Result<T>(true, data, message);
+            item.ResultType = EnumResultType.Success;
+            return item;
+        }
+
+        public static Result<T> Failure(string errorMessage)
+        {
+            var item = new Result<T>(false, default, errorMessage);
+            item.ResultType = EnumResultType.Failure;
+            return item;
+        }
+
+        public static Result<T> ValidationError(string errorMessage)
+        {
+            var item = new Result<T>(false, default, errorMessage);
+            item.ResultType = EnumResultType.ValidationError;
+            return item;
+        }
+
+        public static Result<T> NotFoundError(string errorMessage = "Data not found")
+        {
+            var item = new Result<T>(false, default, errorMessage);
+            item.ResultType = EnumResultType.NotFoundError;
+            return item;
+        }
+    }
+}

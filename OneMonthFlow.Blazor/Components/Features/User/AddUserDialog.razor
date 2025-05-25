@@ -1,0 +1,50 @@
+﻿@using OneMonthFlow.Domain
+@inherits LayoutComponentBase
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="@Request" @ref="form"> 
+            <MudTextField @bind-Value="Request.UserName" Label="User Name" Required="true" />
+            <MudTextField @bind-Value="Request.GitHubAccountName" Label="GitHub Account" />
+            <MudTextField @bind-Value="Request.Nrc" Label="NRC" />
+            <MudTextField @bind-Value="Request.MobileNo" Label="Mobile No" /> 
+            </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="SubmitAsync" Color="Color.Primary">Save</MudButton>
+        <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] IMudDialogInstance? MudDialog { get; set; }
+    [Parameter]
+    public UserRequestModel Request { get; set; } = new();
+
+    private MudForm? form;
+
+    private async Task SubmitAsync()
+    {
+        await form!.Validate();
+
+        if (form.IsValid)
+        {
+            var result = await _httpClientService.ExecuteAsync<Result<string>>(ApiEndpoints.CreateMember, EnumHttpMethod.Post, Request);
+            if (result.IsSuccess)
+            {
+                Snackbar.Add("User created successfully", Severity.Success);
+                MudDialog?.Close(DialogResult.Ok(true));
+            }
+            else
+            {
+                foreach (var error in result.Message.Split(';'))
+                {
+                    Snackbar.Add(error, Severity.Error);
+                }
+            }
+        }
+    }
+
+    private void Cancel() => MudDialog?.Cancel();
+}
