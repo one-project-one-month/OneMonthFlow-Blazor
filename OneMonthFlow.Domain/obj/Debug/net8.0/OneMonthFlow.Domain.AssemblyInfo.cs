@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OneMonthFlow.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+249e53c4e9cf27240c60a48587e26abd311f705c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ca7ea91c678f17af5ab13663a04fdded1f8884c")]
 [assembly: System.Reflection.AssemblyProductAttribute("OneMonthFlow.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OneMonthFlow.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
